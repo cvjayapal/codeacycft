@@ -25,7 +25,7 @@ jobs:
     # Install dependencies and run tests with coverage (example for Python)
     - name: Install Dependencies
       run: |
-        pip install -r requirements.txt
+        #pip install -r requirements.txt
         pip install pytest pytest-cov
 
     - name: Run Tests with Coverage
