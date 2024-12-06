@@ -1,17 +1,12 @@
-AWSTemplateFormatVersion: "2010-09-09"
+---
+AWSTemplateFormatVersion: 2010-09-09
 Description: Simple cloud formation for bucket creation and configuration
-
-
-
-Resources:  
-            
+Resources:
   MainBucket:
-    Type: "AWS::S3::Bucket"
+    Type: AWS::S3::Bucket
     Properties:
       BucketName: jayapal
       BucketEncryption:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
-      
-
