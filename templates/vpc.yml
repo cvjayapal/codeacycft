@@ -1,8 +1,19 @@
 ---
-AWSTemplateFormatVersion: 2010-09-09
-Description: Simple cloud formation for bucket creation and configuration
-Resources:
-  MainBucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: jayapal
+ doe: "a deer, a female deer"
+ ray: "a drop of golden sun"
+ pi: 3.14159
+ xmas: true
+ french-hens: 3
+ calling-birds:
+   - huey
+   - dewey
+   - louie
+   - fred
+ xmas-fifth-day:
+   calling-birds: four
+   french-hens: 3
+   golden-rings: 5
+   partridges:
+     count: 1
+     location: "a pear tree"
+   turtle-doves: two
