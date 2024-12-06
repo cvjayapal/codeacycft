@@ -30,7 +30,7 @@ jobs:
 
     - name: Run Tests with Coverage
       run: |
-        pytest --cov=your_project_name --cov-report=xml  # Replace with your module name
+        pytest --cov=codeacycft --cov-report=xml  # Replace with your module name
 
     # Download Codacy Coverage Reporter
     - name: Download Codacy Coverage Reporter
