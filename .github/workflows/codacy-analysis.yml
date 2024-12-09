@@ -32,7 +32,7 @@ jobs:
       - name: Deploy CloudFormation (Optional for Coverage)
         run: |
           aws cloudformation deploy \
-            --template-file templates/my-template.yaml \
+            --template-file templates/vpc.yaml \
             --stack-name my-stack \
             --region us-east-1
 
