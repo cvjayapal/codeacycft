@@ -1,10 +1,5 @@
 ---
 # A sample YAML file for demonstration
-company: spacelift
-description: >
-  This file represents a sample configuration for Spacelift VPC. 
-  Ensure the lines are under 80 characters.
-
 resources:
   vpc:
     cidrBlock: 10.0.0.0/16
