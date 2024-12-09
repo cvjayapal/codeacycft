@@ -4,7 +4,7 @@ project:
 
 tests:
   my-template-test:
-    template: templates/vpc.yaml   # Path to your CloudFormation template
+    template: templates/vpc.yml   # Path to your CloudFormation template
     parameters:                            # Define your template parameters here
       Environment: Test
     regions:                               # AWS regions where the stack will be deployed
