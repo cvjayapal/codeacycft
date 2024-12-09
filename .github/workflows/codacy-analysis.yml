@@ -22,10 +22,10 @@ jobs:
         run: |
           pip install yamllint  # Install yamllint for YAML linting
 
-      # Step 3: Run YAML Lint
+      # Step 3: Run YAML Lint with parsable format
       - name: Run YAML Lint
         run: |
-          yamllint templates/ --format json > linting-report.json  # Lint all YAML files and output as JSON
+          yamllint templates/ --format parsable > linting-report.txt  # Lint all YAML files and output in parsable format
 
       # Step 4: Upload linting results to Codacy using API
       - name: Upload Linting Report to Codacy
@@ -33,4 +33,4 @@ jobs:
           curl -X POST "https://api.codacy.com/2.0/coverage" \
             -H "Authorization: token ${{ secrets.CODACY_PROJECT_TOKEN }}" \
             -H "Content-Type: application/json" \
-            --data @linting-report.json
+            --data @linting-report.txt
