@@ -1,3 +1,4 @@
+---
 name: Codacy Analysis for CloudFormation Templates
 
 on:
@@ -13,40 +14,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
+      - name: Checkout Code
+        uses: actions/checkout@v3
 
-    # Install dependencies for static analysis (if applicable)
-    - name: Install dependencies
-      run: |
-        pip install pyyaml  # Install any dependencies if you need to parse YAML
+      - name: Install dependencies
+        run: |
+          pip install pyyaml
 
-    # Run Codacy Analysis
-    - name: Run Codacy Analysis
-      uses: codacy/codacy-analysis-cli-action@v4
-      with:
-        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Run Codacy Analysis
+        uses: codacy/codacy-analysis-cli-action@v4
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
 
-    # Validate CloudFormation templates (via YAML or JSON linting)
-    - name: Validate CloudFormation Templates
-      run: |
-        # Run YAML or JSON validation (example for YAML files)
-        yamllint .  # Example of linting YAML files, you can replace this with the right tool
-
-    # Generate report in JSON format (example for YAML linting)
-    - name: Generate YAML Lint Report
-      run: |
-        yamllint --format json . > yamllint-report.json  # Example JSON output for linting
-
-    # Download Codacy Coverage Reporter (if needed)
-    - name: Download Codacy Coverage Reporter
-      run: |
-        curl -Ls https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter.jar
-
-    # Upload Coverage Report to Codacy
-    - name: Upload Coverage Report to Codacy
-      run: |
-        java -jar codacy-coverage-reporter.jar report \
-          --coverage-reporter-path yamllint-report.json  # Replace with your actual report path
-      env:
-        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Validate CloudFormation Templates
+        run: |
+          yamllint --strict .  # Ensures stricter YAML validation
