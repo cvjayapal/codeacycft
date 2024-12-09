@@ -1,16 +1,24 @@
 import boto3
 
-def check_resource(resource_type):
-    """Check if a specific resource type exists in the deployed stack."""
+def check_stack_resources(stack_name, expected_resources):
+    """Check CloudFormation stack for expected resources."""
     client = boto3.client('cloudformation')
-    response = client.describe_stack_resources(StackName='my-stack')
-    resources = [r['ResourceType'] for r in response['StackResources']]
-    return resource_type in resources
+    response = client.describe_stack_resources(StackName=stack_name)
+    stack_resources = [res['ResourceType'] for res in response['StackResources']]
 
-def main():
-    resources_to_check = ['AWS::EC2::VPC', 'AWS::S3::Bucket']
-    coverage = {resource: check_resource(resource) for resource in resources_to_check}
-    print("Coverage Results:", coverage)
+    coverage = {}
+    for resource in expected_resources:
+        coverage[resource] = resource in stack_resources
 
-if __name__ == '__main__':
-    main()
+    return coverage
+
+if __name__ == "__main__":
+    stack_name = "my-stack"
+    expected_resources = [
+        "AWS::EC2::VPC",
+        "AWS::S3::Bucket",
+        "AWS::IAM::Role"
+    ]
+
+    coverage_report = check_stack_resources(stack_name, expected_resources)
+    print("Coverage Report:", coverage_report)
