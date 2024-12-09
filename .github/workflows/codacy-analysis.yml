@@ -22,21 +22,15 @@ jobs:
         run: |
           pip install yamllint  # Install yamllint for YAML linting
 
-      # Step 3: Run YAML linting
+      # Step 3: Run YAML Lint
       - name: Run YAML Lint
         run: |
-          yamllint templates/ --format parsable > coverage-report.txt  # Lint all YAML files in the templates directory
+          yamllint templates/ --format json > linting-report.json  # Lint all YAML files and output as JSON
 
-      # Step 4: Download Codacy Coverage Reporter
-      - name: Download Codacy Coverage Reporter
+      # Step 4: Upload linting results to Codacy using API
+      - name: Upload Linting Report to Codacy
         run: |
-          curl -Ls https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter.jar
-
-      # Step 5: Upload Coverage Report to Codacy (for YAML lint results)
-      - name: Upload Coverage Report to Codacy
-        run: |
-          java -jar codacy-coverage-reporter.jar report \
-            --language yaml \
-            --file coverage-report.txt  # Upload the lint results
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}  # Ensure this is set in GitHub Secrets
+          curl -X POST "https://api.codacy.com/2.0/coverage" \
+            -H "Authorization: token ${{ secrets.CODACY_PROJECT_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data @linting-report.json
