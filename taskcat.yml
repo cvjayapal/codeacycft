@@ -3,7 +3,7 @@ project:
   name: CloudFormation Coverage
 tests:
   my-test:
-    template: templates/vpc.yml
+    template: templates/my-template.yaml
     parameters:
       Env: Dev
     regions:
