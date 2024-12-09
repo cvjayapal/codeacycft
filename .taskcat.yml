@@ -1,0 +1,14 @@
+---
+project:
+  name: codeacycft-testing
+
+tests:
+  my-template-test:
+    template: templates/vpc.yaml   # Path to your CloudFormation template
+    parameters:                            # Define your template parameters here
+      Environment: Test
+    regions:                               # AWS regions where the stack will be deployed
+      - us-east-1
+      - us-west-2
+    tags:                                  # Tags to assign to resources
+      Project: codeacycft
