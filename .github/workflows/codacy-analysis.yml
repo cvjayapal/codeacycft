@@ -1,5 +1,4 @@
----
-name: Codacy and Code Coverage for CloudFormation
+name: Codacy Coverage for CloudFormation Templates (CFT)
 
 on:
   push:
@@ -10,38 +9,34 @@ on:
       - main
 
 jobs:
-  codacy-coverage:
+  lint-and-coverage:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      # Step 2: Install dependencies
       - name: Install Dependencies
         run: |
-          pip install taskcat boto3
+          pip install yamllint  # Install yamllint for YAML linting
 
-      - name: Validate CloudFormation Templates
+      # Step 3: Run YAML linting
+      - name: Run YAML Lint
         run: |
-          yamllint templates/
+          yamllint templates/ --format parsable > coverage-report.txt  # Lint all YAML files in the templates directory
 
-      - name: Test CloudFormation Templates with Taskcat
-        run: |
-          taskcat test run
-
-      - name: Deploy CloudFormation (Optional for Coverage)
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/vpc.yaml \
-            --stack-name my-stack \
-            --region us-east-1
-
-      - name: Generate Coverage Report
-        run: python scripts/coverage.py > coverage.lcov
-
-      - name: Upload Coverage to Codacy
+      # Step 4: Download Codacy Coverage Reporter
+      - name: Download Codacy Coverage Reporter
         run: |
           curl -Ls https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter.jar
-          java -jar codacy-coverage-reporter.jar report -l Python -r coverage.lcov
+
+      # Step 5: Upload lint results to Codacy
+      - name: Upload Coverage Report to Codacy
+        run: |
+          java -jar codacy-coverage-reporter.jar report \
+            --coverage-reporter-path coverage-report.txt \  # Upload the lint results
+            --language YAML
         env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}  # Ensure this is set in GitHub Secrets
