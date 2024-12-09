@@ -32,11 +32,11 @@ jobs:
         run: |
           curl -Ls https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter.jar
 
-      # Step 5: Upload lint results to Codacy
+      # Step 5: Upload Coverage Report to Codacy (for YAML lint results)
       - name: Upload Coverage Report to Codacy
         run: |
           java -jar codacy-coverage-reporter.jar report \
-            --coverage-reporter-path coverage-report.txt \  # Upload the lint results
-            --language YAML
+            --language yaml \
+            --file coverage-report.txt  # Upload the lint results
         env:
           CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}  # Ensure this is set in GitHub Secrets
