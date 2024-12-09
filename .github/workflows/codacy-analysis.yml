@@ -1,4 +1,4 @@
-name: Codacy Coverage for CloudFormation Templates (CFT)
+name: Codacy Linting and Coverage Report for CloudFormation Templates
 
 on:
   push:
@@ -9,28 +9,31 @@ on:
       - main
 
 jobs:
-  lint-and-coverage:
+  linting:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Install dependencies
-      - name: Install Dependencies
+      - name: Install yamllint
         run: |
-          pip install yamllint  # Install yamllint for YAML linting
+          pip install yamllint
 
-      # Step 3: Run YAML Lint with parsable format
-      - name: Run YAML Lint
+      - name: Lint CloudFormation Templates
         run: |
-          yamllint templates/ --format parsable > linting-report.txt  # Lint all YAML files and output in parsable format
-
-      # Step 4: Upload linting results to Codacy using API
-      - name: Upload Linting Report to Codacy
+          yamllint templates/ --format parsable > linting-report.txt
+          
+      - name: Generate Coverage Report (manual conversion)
         run: |
-          curl -X POST "https://api.codacy.com/2.0/coverage" \
-            -H "Authorization: token ${{ secrets.CODACY_PROJECT_TOKEN }}" \
-            -H "Content-Type: application/json" \
-            --data @linting-report.txt
+          # Example of manually converting or processing lint report to coverage format
+          # For demonstration, we're just assuming it's already in Cobertura format (you may need a custom script here)
+          mv linting-report.txt cobertura-report.xml
+          
+      - name: Upload to Codacy Coverage Reporter
+        run: |
+          java -jar codacy-coverage-reporter.jar report \
+            --coverage-reporter-path cobertura-report.xml \
+            --language YAML
+        env:
+  
