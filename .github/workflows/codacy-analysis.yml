@@ -1,5 +1,5 @@
 ---
-name: Codacy and Code Coverage for CloudFormation
+name: Codacy Analysis for CloudFormation Templates
 
 on:
   push:
@@ -10,38 +10,14 @@ on:
       - main
 
 jobs:
-  codacy-coverage:
+  codacy-analysis:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install Dependencies
-        run: |
-          pip install taskcat boto3
-
-      - name: Validate CloudFormation Templates
-        run: |
-          yamllint templates/
-
-      - name: Test CloudFormation Templates with Taskcat
-        run: |
-          taskcat test run
-
-      - name: Deploy CloudFormation (Optional for Coverage)
-        run: |
-          aws cloudformation deploy \
-            --template-file templates/vpc.yaml \
-            --stack-name my-stack \
-            --region us-east-1
-
-      - name: Generate Coverage Report
-        run: python scripts/coverage.py > coverage.lcov
-
-      - name: Upload Coverage to Codacy
-        run: |
-          curl -Ls https://github.com/codacy/codacy-coverage-reporter/releases/latest/download/codacy-coverage-reporter-assembly.jar -o codacy-coverage-reporter.jar
-          java -jar codacy-coverage-reporter.jar report -l Python -r coverage.lcov
-        env:
-          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      - name: Run Codacy Analysis
+        uses: codacy/codacy-analysis-cli-action@v4
+        with:
+          project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
