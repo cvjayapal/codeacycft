@@ -2,9 +2,13 @@
 name: Codacy Analysis for CloudFormation Templates
 
 on:
-  push: {}
-  pull_request: {}
-  
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   codacy-analysis:
     runs-on: ubuntu-latest
