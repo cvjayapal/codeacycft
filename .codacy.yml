@@ -3,3 +3,5 @@ engines:
     enabled: true
   yamllint:
     enabled: true
+  coverage:
+    enabled: true
