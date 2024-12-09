@@ -1,0 +1,10 @@
+---
+project:
+  name: CloudFormation Coverage
+tests:
+  my-test:
+    template: templates/my-template.yaml
+    parameters:
+      Env: Dev
+    regions:
+      - us-east-1
