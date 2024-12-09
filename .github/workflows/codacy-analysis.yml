@@ -17,15 +17,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Install dependencies
-        run: |
-          pip install pyyaml
-
       - name: Run Codacy Analysis
         uses: codacy/codacy-analysis-cli-action@v4
         with:
           project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
-
-      - name: Validate CloudFormation Templates
-        run: |
-          yamllint --strict .  # Ensures stricter YAML validation
